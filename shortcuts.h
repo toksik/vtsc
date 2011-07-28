@@ -11,7 +11,8 @@
 
 /* Shortcut types */
 #define VTSC_SCNONE 0
-#define VTSC_SCCOMMAND 1
+#define VTSC_SCDEBUG 1
+#define VTSC_SCCOMMAND 2
 
 struct vtsc_shortcut
 {
@@ -42,5 +43,10 @@ void vtsc_keyrelease(struct vtsc_keystate *state, int key);
  * Set the flags of all keys in state->keys to 0.
  */
 void vtsc_clearkeystate(struct vtsc_keystate *state);
+
+/**
+ * Do the action specified in sc->type.
+ */
+void vtsc_doaction(struct vtsc_shortcut *sc);
 
 #endif

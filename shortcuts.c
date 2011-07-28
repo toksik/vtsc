@@ -28,8 +28,7 @@ void vtsc_keypress(struct vtsc_keystate *state, int key)
 	    }
 	}
       if (has_key == 1)
-	// do action
-	printf("action!\n");
+	vtsc_doaction(sc);
       sc = sc->next;
     }
 }
@@ -54,4 +53,28 @@ void vtsc_clearkeystate(struct vtsc_keystate *state)
   int key_c;
   for (key_c = 0; key_c < VTSC_EVCODE_MAX; ++ key_c)
     state->keys[key_c] = 0;
+}
+
+/**
+ * Do the action specified in sc->type.
+ */
+void vtsc_doaction(struct vtsc_shortcut *sc)
+{
+  if (sc->type == VTSC_SCNONE)
+    return;
+  else if (sc->type == VTSC_SCDEBUG)
+    {
+      if (sc->action == NULL)
+	printf("Debug shortcut: unknown\n");
+      else
+	printf("Debug shortcut: %s\n", sc->action);
+    }
+  else if (sc->type == VTSC_SCCOMMAND)
+    {
+      if (sc->action == NULL)
+	fprintf(stderr, "Error: No command specified\n");
+      else
+	if (fork() == 0)
+	  execl("/bin/sh", "/bin/sh", "-c", sc->action, NULL);
+    }
 }
