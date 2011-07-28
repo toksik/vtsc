@@ -16,6 +16,7 @@
 
 #define VTSC_EVKEY_MAX 800
 #define VTSC_EVENT_LID 801
+#define VTSC_EVCODE_MAX 801
 
 struct vtsc_evfds
 {
