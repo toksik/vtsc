@@ -1,15 +1,15 @@
 #include "evdev.h"
 
 /**
- * Read an event (16 bytes) from 'fd' into 'ev'.
+ * Read an event (usually 16 bytes) from 'fd' into 'ev'.
  */
 void vtsc_readevent(int fd, struct input_event *ev)
 {
   size_t len, chunk_len;
   len = 0;
-  while (len < 16)
+  while (len < sizeof(struct input_event))
     {
-      chunk_len = read(fd, ev, 16-len);
+      chunk_len = read(fd, ev, sizeof(struct input_event)-len);
       if (chunk_len == 0)
 	exit(-1); // fixme: print useful error message
       else if (chunk_len == -1)
